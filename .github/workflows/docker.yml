@@ -41,7 +41,7 @@ jobs:
           echo "REPO_SLUG=${repo_slug}" >> $GITHUB_ENV
       -
         name: Login to Container registry
-        if: github.event_name != 'pull_request'
+        # if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
