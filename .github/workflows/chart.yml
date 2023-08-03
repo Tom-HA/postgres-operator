@@ -1,10 +1,8 @@
 name: Release Chart
 
 on:
-  push:
-    branches:
-      - main
-      - update-workflows
+  release:
+    types: [published]
 
 jobs:
   release:
