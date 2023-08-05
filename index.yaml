@@ -2,6 +2,18 @@ apiVersion: v1
 entries:
   ext-postgres-operator:
   - apiVersion: v2
+    appVersion: 1.2.6
+    created: "2023-08-05T18:29:54.752152607Z"
+    description: 'A Helm chart for the External Postgres operator  helm repo add ext-postgres-operator
+      https://tom-ha.github.io/postgres-operator/ helm upgrade --install -n operators
+      ext-postgres-operator ext-postgres-operator/ext-postgres-operator '
+    digest: 043504bd78c3897a5287c16f364268a0c0e644b228546c031fe5b7b25a61545e
+    name: ext-postgres-operator
+    type: application
+    urls:
+    - https://github.com/Tom-HA/postgres-operator/releases/download/ext-postgres-operator-1.2.6/ext-postgres-operator-1.2.6.tgz
+    version: 1.2.6
+  - apiVersion: v2
     appVersion: 1.2.5
     created: "2023-08-03T13:04:42.452988501Z"
     description: 'A Helm chart for the External Postgres operator  helm repo add ext-postgres-operator
@@ -14,4 +26,4 @@ entries:
     urls:
     - https://github.com/Tom-HA/postgres-operator/releases/download/ext-postgres-operator-1.2.5/ext-postgres-operator-1.2.5.tgz
     version: 1.2.5
-generated: "2023-08-03T13:04:42.452993701Z"
+generated: "2023-08-05T18:29:54.752164007Z"
