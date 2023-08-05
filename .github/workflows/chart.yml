@@ -1,8 +1,9 @@
 name: Release Chart
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
 jobs:
   release:
@@ -11,6 +12,7 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
+    name: Push Chart and Tag
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -27,5 +29,7 @@ jobs:
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
+        with:
+          config: cr.yaml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
