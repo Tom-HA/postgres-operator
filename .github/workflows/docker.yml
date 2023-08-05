@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'update-docker'
     tags:
       - 'v*'
 
@@ -35,6 +36,10 @@ jobs:
         run: |
           export repo_slug=$(echo ${GITHUB_REPOSITORY,,})
           echo "REPO_SLUG=${repo_slug}" >> $GITHUB_ENV
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        
       -
         name: Login to Container registry
         uses: docker/login-action@v2
