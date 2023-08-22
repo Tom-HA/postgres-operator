@@ -16,9 +16,9 @@ const (
 	GRANT_USAGE_SCHEMA   = `GRANT USAGE ON SCHEMA "%s" TO "%s"`
 	GRANT_ALL_TABLES     = `GRANT %s ON ALL TABLES IN SCHEMA "%s" TO "%s"`
 	DEFAULT_PRIVS_SCHEMA = `ALTER DEFAULT PRIVILEGES FOR ROLE "%s" IN SCHEMA "%s" GRANT %s ON TABLES TO "%s"`
-	REVOKE_CONNECT		 = `REVOKE CONNECT ON DATABASE "%s" FROM public`
-	TERMINATE_BACKEND	 = `SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity	WHERE pg_stat_activity.datname = '%s' AND pid <> pg_backend_pid()`
-	GET_DB_OWNER	 	 = `SELECT pg_catalog.pg_get_userbyid(d.datdba) FROM pg_catalog.pg_database d WHERE d.datname = '%s'`
+	REVOKE_CONNECT       = `REVOKE CONNECT ON DATABASE "%s" FROM public`
+	TERMINATE_BACKEND    = `SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity	WHERE pg_stat_activity.datname = '%s' AND pid <> pg_backend_pid()`
+	GET_DB_OWNER         = `SELECT pg_catalog.pg_get_userbyid(d.datdba) FROM pg_catalog.pg_database d WHERE d.datname = '%s'`
 	GRANT_CREATE_SCHEMA  = `GRANT CREATE ON DATABASE "%s" TO "%s"`
 )
 
@@ -58,7 +58,18 @@ func (c *pg) CreateSchema(db, role, schema string, logger logr.Logger) error {
 }
 
 func (c *pg) DropDatabase(database string, logger logr.Logger) error {
-	_, err := c.db.Exec(fmt.Sprintf(DROP_DATABASE, database))
+	_, err := c.db.Exec(fmt.Sprintf(REVOKE_CONNECT, database))
+	// Error code 3D000 is returned if database doesn't exist
+	if err != nil && err.(*pq.Error).Code != "3D000" {
+		return err
+	}
+
+	_, err = c.db.Exec(fmt.Sprintf(TERMINATE_BACKEND, database))
+	// Error code 3D000 is returned if database doesn't exist
+	if err != nil && err.(*pq.Error).Code != "3D000" {
+		return err
+	}
+	_, err = c.db.Exec(fmt.Sprintf(DROP_DATABASE, database))
 	// Error code 3D000 is returned if database doesn't exist
 	if err != nil && err.(*pq.Error).Code != "3D000" {
 		return err
